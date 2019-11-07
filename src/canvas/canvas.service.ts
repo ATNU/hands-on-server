@@ -15,4 +15,11 @@ export class CanvasService {
         return await savedCanvas.save();
     }
 
+    async getAllCanvas(): Promise<Canvas[]> {
+        return await this.canvasModel.find().exec();
+    }
+
+    async getCanvas(canvasID): Promise<Canvas> {
+        return await this.canvasModel.findById(canvasID).exec();
+    }
 }
