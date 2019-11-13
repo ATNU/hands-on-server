@@ -22,4 +22,6 @@ export class CanvasService {
     async getCanvas(canvasID): Promise<Canvas> {
         return await this.canvasModel.findById(canvasID).exec();
     }
+
+
 }
