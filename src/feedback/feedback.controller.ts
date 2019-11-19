@@ -30,10 +30,5 @@ export class FeedbackController {
         return res.status(HttpStatus.OK).json(feedback);
     }
 
-    @Get('canvas/:canvasID')
-    async getFeedbackForCanvasId(@Res() res, @Param('canvasID') canvasID) {
-        const feedback = await this.feedbackService.getFeedbackForCanvas(canvasID);
-        return res.status(HttpStatus.OK).json(feedback);
-}
 
 }
