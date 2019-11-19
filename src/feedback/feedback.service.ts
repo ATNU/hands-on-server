@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import {Model} from 'mongoose';
 import {Feedback} from './feedback.interface';
-import { CreateFeedbackDto } from './createFeedback.dto';
+import {CreateFeedbackDto} from './createFeedback.dto';
 import {Canvas} from '../canvas/canvas.interface';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class FeedbackService {
     async save(createFeedbackDto: CreateFeedbackDto): Promise<Feedback> {
         const savedFeedback = new this.feedbackModel(createFeedbackDto);
         return await savedFeedback.save();
-}
+    }
 
     async getAllFeedback(): Promise<Feedback[]> {
         return await this.feedbackModel.find().exec();
@@ -21,5 +21,16 @@ export class FeedbackService {
 
     async getFeedback(feedbackID): Promise<Feedback> {
         return await this.feedbackModel.findById(feedbackID).exec();
+    }
+
+    async getFeedbackForCanvas(canvasID): Promise<Feedback> {
+        const allFeedback = await this.getAllFeedback();
+        const feedbackList = [];
+        for (const feedback of allFeedback) {
+            if (feedback.canvasId.toString() === canvasID.toString()) {
+                feedbackList.push(feedback);
+            }
+        }
+        return feedbackList[0];
     }
 }
