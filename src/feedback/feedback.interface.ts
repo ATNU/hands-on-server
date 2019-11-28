@@ -12,4 +12,5 @@ export interface Feedback extends Document {
     readonly device: string;
     readonly canvasSVG: string;
     readonly canvasJSON: string;
+    readonly createdAt: string;
 }

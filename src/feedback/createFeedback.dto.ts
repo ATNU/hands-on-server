@@ -11,4 +11,5 @@ export interface CreateFeedbackDto  {
     readonly device: string;
     readonly canvasSVG: string;
     readonly canvasJSON: string;
+    readonly createdAt: string;
 }

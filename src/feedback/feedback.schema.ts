@@ -12,5 +12,6 @@ export const FeedbackSchema = new mongoose.Schema({
     device: String,
     canvasSVG: String,
     canvasJSON: String,
+    createdAt: String,
 
 });

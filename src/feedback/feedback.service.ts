@@ -10,6 +10,7 @@ export class FeedbackService {
     }
 
     async save(createFeedbackDto: CreateFeedbackDto): Promise<Feedback> {
+        console.log(createFeedbackDto);
         const savedFeedback = new this.feedbackModel(createFeedbackDto);
         return await savedFeedback.save();
     }
