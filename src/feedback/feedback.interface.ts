@@ -9,7 +9,9 @@ export interface Feedback extends Document {
     readonly q3Check: boolean;
     readonly q3Text: string;
     readonly job: string;
+    readonly jobText: string;
     readonly device: string;
+    readonly deviceText: string;
     readonly canvasSVG: string;
     readonly canvasJSON: string;
     readonly createdAt: string;
