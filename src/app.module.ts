@@ -14,7 +14,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-      MongooseModule.forRoot('mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASSWORD + '@' +  + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME + '?ssl=true', { useNewUrlParser: true, useUnifiedTopology: true }),
+      MongooseModule.forRoot(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true }),
       FeedbackModule],
   controllers: [AppController],
   providers: [AppService],
