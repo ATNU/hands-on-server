@@ -2,7 +2,7 @@ import {Body, Controller, Get, HttpStatus, NotFoundException, Param, Post, Res} 
 import {FeedbackService} from './feedback.service';
 import {CreateFeedbackDto} from './createFeedback.dto';
 
-@Controller('feedback')
+@Controller('api/feedback')
 export class FeedbackController {
     constructor(private feedbackService: FeedbackService) {
 
