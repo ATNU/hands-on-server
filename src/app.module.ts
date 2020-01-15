@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FeedbackModule } from './feedback/feedback.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { TextModule } from './text/text.module';
 
 /*
 * DB_HOST     = mongodb
@@ -12,11 +13,24 @@ import { MongooseModule } from '@nestjs/mongoose';
 * DB_PASSWORD =
 */
 
+// for production
+// @Module({
+//     imports: [
+//         MongooseModule.forRoot(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true }),
+//         FeedbackModule],
+//     controllers: [AppController],
+//     providers: [AppService],
+// })
+
+// for local development
 @Module({
-  imports: [
-      MongooseModule.forRoot(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true }),
-      FeedbackModule],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [
+        MongooseModule.forRoot('mongodb://localhost:27017/hands-on-db', { useNewUrlParser: true, useUnifiedTopology: true }),
+        FeedbackModule,
+        TextModule],
+    controllers: [AppController],
+    providers: [AppService],
 })
+
+
 export class AppModule {}
