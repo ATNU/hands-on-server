@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, Post, Res} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, Post, Req, Res} from '@nestjs/common';
 import {UserService} from './user.service';
 import {CreateUserDto} from './createUser.dto';
 import * as bcrypt from 'bcrypt';
@@ -37,18 +37,18 @@ export class UserController {
                 });
             } else {
                 // email isn't taken
-
+                // todo check password validity
                 // ----- hash password
-                console.log('unhashed pass' + user.password);
-                bcrypt.hash(user.password, 10, (err, hash) => {
+
+                bcrypt.hash(user.password, 10, async (err, hash) => {
                     if (err) {
                         console.log('hashing error');
                         // throw error
                     } else {
                         user.password = hash;
-                        console.log('hashed pass' + user.password);
+
                         // save user in db
-                        const savedUser = this.userService.save(user);
+                        const savedUser = await this.userService.save(user);
                         return res.status(HttpStatus.CREATED).json({
                             message: 'User saved',
                             savedUser,
@@ -56,9 +56,39 @@ export class UserController {
                     }
                 });
             }
-            // todo check password validity
+
         }
     }
+
+
+
+    @Get('login')
+    async logIn(@Req() req, @Res() res) {
+        const username = req.body.username;
+        const unhashedPass = req.body.password;
+
+        const rUser = this.userService.findByUsername(username);
+console.log('rUser' + Object.keys(rUser).length);
+        if (Object.keys(rUser).length === 0) {
+        // no user found
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'username does not exist',
+            });
+        } else {
+            // check password matches
+            this.userService.findByUsername(username).then((user) => {
+                bcrypt.compare(unhashedPass, user.password, (error, match) => {
+                    if (error) {
+                        console.log('passwords dont match');
+                    } else {
+                        console.log('passwords match');
+                    }
+                });
+            });
+        }
+
+    }
+
 
     @Get('allUsers')
     async getAll() {
