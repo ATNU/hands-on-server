@@ -2,10 +2,13 @@ import {Body, Controller, Get, HttpStatus, Post, Req, Res} from '@nestjs/common'
 import {UserService} from '../user/user.service';
 import {CreateUserDto} from '../user/createUser.dto';
 import * as bcrypt from 'bcrypt';
+import {AuthService} from './auth.service';
 
 @Controller('api/auth')
 export class AuthController {
-    constructor(private userService: UserService) {
+    constructor(
+        private userService: UserService,
+        private authService: AuthService) {
 
     }
 
@@ -63,11 +66,11 @@ export class AuthController {
 
 
     @Get('login')
-    async logIn(@Req() req, @Res() res) {
-        const username = req.body.username;
-        const unhashedPass = req.body.password;
+    async logIn(@Res() res, @Body() createUserDto: CreateUserDto) {
+        const username = createUserDto.username;
+        const unhashedPass = createUserDto.password;
 
-        const rUser = this.userService.findByUsername(username);
+        const rUser = await this.userService.findByUsername(username);
         console.log('rUser' + Object.keys(rUser).length);
         if (Object.keys(rUser).length === 0) {
             // no user found
@@ -80,8 +83,20 @@ export class AuthController {
                 bcrypt.compare(unhashedPass, user.password, (error, match) => {
                     if (error) {
                         console.log('passwords dont match');
+                        res.status(HttpStatus.UNAUTHORIZED).json({
+                            message: 'password is not correct',
+                        })
                     } else {
                         console.log('passwords match');
+
+                        // hide password
+                        rUser.password = undefined;
+
+                        // create and send jwt
+                        const tokenData = this.authService.createToken(rUser);
+                        res.status(HttpStatus.OK).json({
+                            tokenData,
+                        });
                     }
                 });
             });
