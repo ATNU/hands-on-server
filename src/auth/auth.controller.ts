@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import {AuthService} from './auth.service';
 import { Model } from 'mongoose';
 import {User} from '../user/user.interface';
+import {typeIsOrHasBaseType} from 'tslint/lib/language/typeUtils';
 
 @Controller('api/auth')
 export class AuthController {
@@ -16,10 +17,18 @@ export class AuthController {
 
     @Post('signup')
     async saveUser(@Res() res, @Body() createUserDto: CreateUserDto) {
-        // todo reject if fields aren't there
 
-        let user = createUserDto;
+        const user = createUserDto;
 
+        // ----- reject if required fields are missing
+        if (!user.username || !user.email || !user.password) {
+            console.log('missing details');
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'Please provide username, email and password to sign up',
+            });
+        }
+
+;
         // ------ check username not in use
         const retreivedUser = await this.userService.findByUsername(createUserDto.username);
 
@@ -28,7 +37,7 @@ export class AuthController {
             console.log('username taken');
             // username is in use
             return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'username taken',
+                message: 'Username taken',
             });
         } else {
 
@@ -38,22 +47,30 @@ export class AuthController {
                 // email is taken
                 console.log('email used');
                 return res.status(HttpStatus.BAD_REQUEST).json({
-                    message: 'email taken',
+                    message: 'Email taken',
                 });
             } else {
                 // email isn't taken
+
+                // todo check email validity
                 // todo check password validity
                 // ----- hash password
 
                 bcrypt.hash(user.password, 10, async (err, hash) => {
                     if (err) {
                         console.log('hashing error');
-                        // throw error
+                        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                            message: 'Problem hashing password',
+                        })
                     } else {
                         user.password = hash;
 
+                        user.furthestPage = 1;
+
                         // save user in db
                         const savedUser = await this.userService.save(user);
+                        savedUser.password = undefined;
+
                         return res.status(HttpStatus.CREATED).json({
                             message: 'User saved',
                             savedUser,
@@ -78,7 +95,7 @@ export class AuthController {
         if (Object.keys(rUser).length === 0) {
             // no user found
             return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'username does not exist',
+                message: 'Username does not exist',
             });
         } else {
             // check password matches
@@ -88,7 +105,7 @@ export class AuthController {
                     if (error) {
                         console.log('passwords dont match');
                         res.status(HttpStatus.UNAUTHORIZED).json({
-                            message: 'password is not correct',
+                            message: 'Password is not correct',
                         });
                     } else {
                         console.log('passwords match');
