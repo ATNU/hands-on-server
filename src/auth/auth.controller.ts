@@ -3,6 +3,8 @@ import {UserService} from '../user/user.service';
 import {CreateUserDto} from '../user/createUser.dto';
 import * as bcrypt from 'bcrypt';
 import {AuthService} from './auth.service';
+import { Model } from 'mongoose';
+import {User} from '../user/user.interface';
 
 @Controller('api/auth')
 export class AuthController {
@@ -70,8 +72,9 @@ export class AuthController {
         const username = createUserDto.username;
         const unhashedPass = createUserDto.password;
 
+        // list of objects with that username
         const rUser = await this.userService.findByUsername(username);
-        console.log('rUser' + Object.keys(rUser).length);
+
         if (Object.keys(rUser).length === 0) {
             // no user found
             return res.status(HttpStatus.BAD_REQUEST).json({
@@ -79,13 +82,14 @@ export class AuthController {
             });
         } else {
             // check password matches
-            this.userService.findByUsername(username).then((user) => {
+            const user = rUser[0];
+
                 bcrypt.compare(unhashedPass, user.password, (error, match) => {
                     if (error) {
                         console.log('passwords dont match');
                         res.status(HttpStatus.UNAUTHORIZED).json({
                             message: 'password is not correct',
-                        })
+                        });
                     } else {
                         console.log('passwords match');
 
@@ -99,7 +103,6 @@ export class AuthController {
                         });
                     }
                 });
-            });
         }
 
     }
