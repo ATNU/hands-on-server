@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import {User} from './user.interface';
 import {CreateUserDto} from './createUser.dto';
 
+
 @Injectable()
 export class UserService {
     constructor(@InjectModel('User') private readonly userModel: Model<User>) {
@@ -28,4 +29,13 @@ export class UserService {
         return this.userModel.find({email: emailSupplied});
     }
 
+    // returns 0 to indicate error
+    async getFurthestPage(username: string) {
+        await this.findByUsername(username).then((user) => {
+            if (user) {
+                return user.furthestPage;
+            }
+            return 0;
+        });
+    }
 }

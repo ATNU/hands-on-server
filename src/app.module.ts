@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FeedbackModule } from './feedback/feedback.module';
@@ -8,7 +8,9 @@ import { UserModule } from './user/user.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import {AuthService} from './auth/auth.service';
+import { PageModule } from './page/page.module';
 import * as dotenv from 'dotenv';
+import {AuthMiddleware} from './middleware/auth.middleware';
 dotenv.config();
 
 /*
@@ -27,10 +29,17 @@ dotenv.config();
         FeedbackModule,
         TextModule,
         UserModule,
-        AuthModule],
+        AuthModule,
+        PageModule],
     controllers: [AppController, AuthController],
     providers: [AppService, AuthService],
 })
 
 
-export class AppModule {}
+export class AppModule implements NestModule{
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(AuthMiddleware)
+            .forRoutes('api/page');
+    }
+}
