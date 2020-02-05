@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, Post, Req, Res} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, Param, Post, Req, Res} from '@nestjs/common';
 import {Page} from './page.interface';
 import {PageService} from './page.service';
 import {CreateFeedbackDto} from '../feedback/createFeedback.dto';
@@ -13,13 +13,38 @@ export class PageController {
     ) {
     }
 
-// todo
-    // get most recently saved version of page
-    @Get()
-    async getPage() {
+// todo get most recently saved version of page
+    @Get('/:pageNo')
+    async getPage(@Res() res, @Req() req, @Param('pageNo') pageNo) {
+    console.log('get page reached');
+    const pages = await this.pageService.getPagesForUserForPageNo(pageNo, req.body.jwt.id);
+
+    // if there's no saved pages then respond
+        if (pages.length === 0) {
+            return res.status(HttpStatus.OK).json({
+                page: pages,
+                message: 'user has not saved this page yet',
+            });
+        }
+
+    // if there's only 1 saved page then return it
+        if (pages.length === 1) {
+                return res.status(HttpStatus.OK).json({
+                    page: pages[0],
+                });
+
+        } else {
+
+            // find most recently saved page
+            const page = await this.pageService.getMostRecentPage(pages);
+            return res.status(HttpStatus.OK).json({
+                page,
+            });
+        }
 
     }
 
+    // todo version that updates if that page has already been saved
     @Post('save')
     async savePage(@Res() res, @Req() req, @Body() createPageDto: CreatePageDto) {
 

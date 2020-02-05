@@ -13,11 +13,11 @@ export class AuthMiddleware implements NestMiddleware {
         const header = req.headers;
         console.log('auth middleware reached');
 
-        if (!header) {
-            return errorMessage('No header');
-        }
-        if (!header.authorization) {
-            return errorMessage('No authorization in header');
+        if (header.authorization === undefined) {
+            console.log('No bearer authorization in header');
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'No bearer authorization in header',
+            });
         }
 
         let token = header.authorization;
@@ -30,13 +30,17 @@ export class AuthMiddleware implements NestMiddleware {
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
            if (err) {
                console.log(err);
-               return errorMessage(err.message);
+               return res.status(HttpStatus.BAD_REQUEST).json({
+                   message: err.message,
+               });
            }
            if (decoded === null) {
                 console.log('token is invalid');
-                return errorMessage('Token is invalid, please sign in again');
+               return res.status(HttpStatus.BAD_REQUEST).json({
+                   message: 'Token is invalid, please sign in again',
+               });
+
             } else {
-               // send on details?
                console.log('token is valid, progress to controller');
                req.body.jwt = decoded;
                next();
