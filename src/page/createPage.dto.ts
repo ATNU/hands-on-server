@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export interface CreatePageDto {
-    username: string;
+    userId: mongoose.Schema.Types.ObjectId;
     readonly pageNo: number;
     readonly svg: string;
     readonly json: string;

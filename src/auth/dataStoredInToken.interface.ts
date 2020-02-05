@@ -1,7 +1,7 @@
-// username stored in jwt for identification
+//  stored in jwt for identification
 
 interface DataStoredInToken {
-    username: string;
+    email: string;
 }
 
 export default DataStoredInToken;

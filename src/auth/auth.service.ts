@@ -11,15 +11,12 @@ export class AuthService {
 
     }
 
-    createToken(user: User): TokenData {
+    createToken(user): TokenData {
         const expiresIn = 60 * 60; // an hour
         const secret = process.env.JWT_SECRET;
-        const dataStoredInToken: DataStoredInToken = {
-            username: user.username,
-        };
         return {
             expiresIn,
-            token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
+            token: jwt.sign({id: user[0]._id}, secret, { expiresIn }),
         };
     }
 

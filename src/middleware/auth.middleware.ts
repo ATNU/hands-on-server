@@ -4,13 +4,14 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
+    // tslint:disable-next-line:ban-types
     use(req: Request, res: Response, next: Function) {
-        const errorMessage = (errorMessage: string) => res.status(HttpStatus.BAD_REQUEST).json({
+        const errorMessage = (errorString: string) => res.status(HttpStatus.BAD_REQUEST).json({
             message: errorMessage,
         });
 
         const header = req.headers;
-        console.log(header.authorization);
+        console.log('auth middleware reached');
 
         if (!header) {
             return errorMessage('No header');
@@ -36,7 +37,8 @@ export class AuthMiddleware implements NestMiddleware {
                 return errorMessage('Token is invalid, please sign in again');
             } else {
                // send on details?
-               console.log(decoded);
+               console.log('token is valid, progress to controller');
+               req.body.jwt = decoded;
                next();
            }
 

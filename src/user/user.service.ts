@@ -20,18 +20,13 @@ export class UserService {
         return this.userModel.find().exec();
     }
 
-    // returns empty list if none found
-    async findByUsername(usernameSupplied: string): Promise<User> {
-        return this.userModel.find({username: usernameSupplied});
-    }
-
     async findByEmail(emailSupplied: string): Promise<User> {
         return this.userModel.find({email: emailSupplied});
     }
 
     // returns 0 to indicate error
-    async getFurthestPage(username: string) {
-        await this.findByUsername(username).then((user) => {
+    async getFurthestPage(email: string) {
+        await this.findByEmail(email).then((user) => {
             if (user) {
                 return user.furthestPage;
             }

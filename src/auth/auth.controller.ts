@@ -21,35 +21,25 @@ export class AuthController {
         const user = createUserDto;
 
         // ----- reject if required fields are missing
-        if (!user.username || !user.email || !user.password) {
+        if ( !user.email || !user.password) {
             console.log('missing details');
             return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'Please provide username, email and password to sign up',
+                message: 'Please provide email and password to sign up',
             });
         }
 
 ;
         // ------ check username not in use
-        const retreivedUser = await this.userService.findByUsername(createUserDto.username);
+        const retreivedUser = await this.userService.findByEmail(createUserDto.email);
 
         // check if returned object is empty
         if (Object.keys(retreivedUser).length > 0) {
-            console.log('username taken');
+            console.log('email already in use');
             // username is in use
             return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'Username taken',
+                message: 'Email already in use',
             });
         } else {
-
-            // ------ check email not in use
-            const retrievedPass = await this.userService.findByEmail(createUserDto.email);
-            if (Object.keys(retrievedPass).length > 0) {
-                // email is taken
-                console.log('email used');
-                return res.status(HttpStatus.BAD_REQUEST).json({
-                    message: 'Email taken',
-                });
-            } else {
                 // email isn't taken
 
                 // todo check email validity
@@ -61,7 +51,7 @@ export class AuthController {
                         console.log('hashing error');
                         return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
                             message: 'Problem hashing password',
-                        })
+                        });
                     } else {
                         user.password = hash;
 
@@ -78,24 +68,22 @@ export class AuthController {
                     }
                 });
             }
-
-        }
     }
 
 
 
     @Get('login')
     async logIn(@Res() res, @Body() createUserDto: CreateUserDto) {
-        const username = createUserDto.username;
+        const email = createUserDto.email;
         const unhashedPass = createUserDto.password;
 
         // list of objects with that username
-        const rUser = await this.userService.findByUsername(username);
+        const rUser = await this.userService.findByEmail(email);
 
         if (Object.keys(rUser).length === 0) {
             // no user found
             return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'Username does not exist',
+                message: 'Email not in use',
             });
         } else {
             // check password matches
@@ -109,9 +97,6 @@ export class AuthController {
                         });
                     } else {
                         console.log('passwords match');
-
-                        // hide password
-                        rUser.password = undefined;
 
                         // create and send jwt
                         const tokenData = this.authService.createToken(rUser);
@@ -129,12 +114,4 @@ export class AuthController {
     async getAll() {
         return await this.userService.findAll();
     }
-
-// @Get('byUsername')
-//     async getByUsername() {
-//         return this.userService.usernameTaken('testUsername');
-// }
-
-    // todo log in
-
 }

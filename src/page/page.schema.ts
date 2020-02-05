@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const PageSchema = new mongoose.Schema({
-    username: String,
+    userId: mongoose.Schema.Types.ObjectId,
     pageNo: Number,
     svg: String,
     json: String,
