@@ -158,7 +158,7 @@ Include valid jwt
 ### Success
 
 User has not saved anything for that page number yet:
-```aidl
+```
 {
     "page": [],
     "message": "user has not saved this page yet"
@@ -166,7 +166,7 @@ User has not saved anything for that page number yet:
 ```
 
 User has saved a page for that number (returns most recently saved version):
-```aidl
+```
 {
     "page": {
         "_id": "5e3acbcc6cd4b510e48023d5",

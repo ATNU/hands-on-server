@@ -13,7 +13,7 @@ export class PageController {
     ) {
     }
 
-// todo get most recently saved version of page
+
     @Get('/:pageNo')
     async getPage(@Res() res, @Req() req, @Param('pageNo') pageNo) {
     console.log('get page reached');
@@ -44,7 +44,7 @@ export class PageController {
 
     }
 
-    // todo version that updates if that page has already been saved
+
     @Post('save')
     async savePage(@Res() res, @Req() req, @Body() createPageDto: CreatePageDto) {
 
@@ -62,6 +62,43 @@ export class PageController {
             return res.status(HttpStatus.CREATED).json({
                 message: 'Page saved',
             });
+        }
+    }
+
+    // todo version that updates if that page has already been saved
+    @Post('saveAndUpdate')
+    async saveAndUpdatePage(@Res() res, @Req() req, @Body() createPageDto: CreatePageDto) {
+        // create full page object
+        if (mongoose.Types.ObjectId.isValid(req.body.jwt.id)) {
+            const mongoUserId = mongoose.Types.ObjectId(req.body.jwt.id);
+            const pageToSave = {
+                userId: mongoUserId,
+                pageNo: createPageDto.pageNo,
+                svg: createPageDto.svg,
+                json: createPageDto.json,
+                timestamp: Date.now(),
+            };
+
+            // check if pageNo already exists for this user
+
+            const alreadySaved = await this.pageService.getPagesForUserForPageNo(createPageDto.pageNo, req.body.jwt.id);
+            if (alreadySaved.length === 0) {
+                // no page already saved so go ahead and save as usual
+                const page = await this.pageService.save(pageToSave);
+                return res.status(HttpStatus.CREATED).json({
+                    message: 'Page saved',
+                    page
+                });
+            } else {
+                // get page from database and update svg, json and timestamp
+                const updatedPage = await this.pageService.update(alreadySaved[0]._id, pageToSave);
+                return res.status(HttpStatus.OK).json({
+                    message: 'Page updated',
+                    updatedPage,
+                });
+            }
+
+
         }
     }
 
