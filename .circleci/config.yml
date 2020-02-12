@@ -29,11 +29,46 @@ jobs:
           paths:
             - "/go/pkg"
 
+  build:
+    docker:
+      - image: circleci/node:latest
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: install-npm
+          command: npm install
+      - setup_remote_docker:
+          docker_layer_caching: false
+
+      - run: |
+          docker build -t rsenuatnu.azurecr.io/hands-on-server:latest -t rsenuatnu.azurecr.io/hands-on-server:$CIRCLE_SHA1 .
+          docker login -u $DOCKER_USER -p $DOCKER_PASS rsenuatnu.azurecr.io
+          docker push rsenuatnu.azurecr.io/hands-on-server:latest
+          docker push rsenuatnu.azurecr.io/hands-on-server:$CIRCLE_SHA1
+          docker push rsenuatnu.azurecr.io/hands-on-server:$CIRCLE_TAG
+
+      - save_cache:
+          key: v1-pkg-cache
+          paths:
+            - "/go/pkg"
+
+
 workflows:
   version: 2
   build:
     jobs:
       - build:
+          context: atnu-context
+  build-tags:
+    jobs:
+      - build-with-tag:
           context: atnu-context
           filters:
             tags:
