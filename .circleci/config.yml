@@ -50,13 +50,13 @@ workflows:
           filters:
             tags:
               only: /^\d+\.\d+\.\d+$/
-      - publish-github-release:
-          context: atnu-context
-          requires:
-            - build
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^\d+\.\d+\.\d+$/
+#      - publish-github-release:
+#          context: atnu-context
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only: /^\d+\.\d+\.\d+$/
 
