@@ -29,9 +29,34 @@ jobs:
           paths:
             - "/go/pkg"
 
+#  publish-github-release:
+#    docker:
+#      - image: cibuilds/github:0.10
+#    steps:
+#      - attach_workspace:
+#          at: ./artifacts
+#      - run:
+#          name: "Publish release on GitHub"
+#          command: |
+#            VERSION=$(my-binary --version)
+#            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./artifacts/
+
 workflows:
   version: 2
   build:
     jobs:
       - build:
           context: atnu-context
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+      - publish-github-release:
+          context: atnu-context
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+
