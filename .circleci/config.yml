@@ -50,7 +50,6 @@ jobs:
       - run: |
           docker build -t rsenuatnu.azurecr.io/hands-on-server:latest -t rsenuatnu.azurecr.io/hands-on-server:$CIRCLE_SHA1 .
           docker login -u $DOCKER_USER -p $DOCKER_PASS rsenuatnu.azurecr.io
-          docker push rsenuatnu.azurecr.io/hands-on-server:latest
           docker push rsenuatnu.azurecr.io/hands-on-server:$CIRCLE_SHA1
           docker push rsenuatnu.azurecr.io/hands-on-server:$CIRCLE_TAG
 
