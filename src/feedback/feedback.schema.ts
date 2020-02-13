@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 
 
 export const FeedbackSchema = new mongoose.Schema({
+    userId: mongoose.Schema.Types.ObjectId,
     q1Check: String,
     q1Text: String,
     q2Check: String,
@@ -12,8 +13,5 @@ export const FeedbackSchema = new mongoose.Schema({
     jobText: String,
     device: String,
     deviceText: String,
-    canvasSVG: String,
-    canvasJSON: String,
-    createdAt: String,
-
+    timestamp: mongoose.Schema.Types.Date,
 });

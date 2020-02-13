@@ -262,7 +262,7 @@ User has saved a page for that number (returns most recently saved version):
 see jwt failures
 
 
-# Save
+# Save page
 Saves each page as a new entry in the database, even if that user has already saved a version of that page number.
 
 POST /api/page/save
@@ -283,7 +283,7 @@ Include valid jwt
 see jwt failures
 
 
-# Save or update
+# Save or update page
 Saves each page as a new entry in the database or updates the entry if the user has previously saved an entry for that page.
 
 POST /api/page/sou
@@ -302,3 +302,44 @@ Include valid jwt
     
 ### Failure
 see jwt failures
+
+# Save feedback
+
+POST api/feedback/save
+
+### Request
+Include valid jwt
+
+```$xslt
+{ 
+	"q1Check" : string, REQUIRED 
+	"q1Text" : string,
+	"q2Check" : string, REQUIRED 
+	"q2Text" : string,
+	"q3Check" :string, REQUIRED 
+	"q3Text" : string,
+	"job" : string, REQUIRED 
+	"jobText" : string,
+	"device" :string, REQUIRED 
+	"deviceText" : string,
+ }
+```
+
+### Success
+
+```
+201 CREATED
+{
+   "message": "Feedback saved"
+} 
+```    
+
+### Failure
+see jwt failures
+
+```$xslt
+400 BAD REQUEST
+{
+    "message": "Missing required fields"
+}
+```
