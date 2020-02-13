@@ -183,4 +183,43 @@ User has saved a page for that number (returns most recently saved version):
 see jwt failures
 
 
+# Save
+Saves each page as a new entry in the database, even if that user has already saved a version of that page number.
 
+POST /api/page/save
+
+### Request
+Include valid jwt
+
+### Success
+
+```
+201 CREATED
+{
+   "message": "Page saved"
+} 
+```    
+    
+### Failure
+see jwt failures
+
+
+# Save or update
+Saves each page as a new entry in the database or updates the entry if the user has previously saved an entry for that page.
+
+POST /api/page/sou
+
+### Request
+Include valid jwt
+
+### Success
+
+```
+201 CREATED
+{
+   "message": "Page saved or updated"
+} 
+```    
+    
+### Failure
+see jwt failures

@@ -25,7 +25,7 @@ dotenv.config();
 
 @Module({
     imports: [
-        MongooseModule.forRoot(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true }),
+        MongooseModule.forRoot(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true,  useFindAndModify: false  }),
         FeedbackModule,
         TextModule,
         UserModule,

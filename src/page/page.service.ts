@@ -41,71 +41,6 @@ export class PageService {
         return mostRecentPage;
     }
 
-//     async getFurthestPage(userId): Promise<Page> {
-//         console.log('furthest page in service');
-//         const allPages = await this.pageModel.find({userId});
-//
-// // if there's no pages then user has none saved
-//         if (allPages.length === 0) {
-//             console.log('no pages for this user');
-//             return null;
-//         } else {
-//             // if there's more than one page saved then look for most recent
-//             if (allPages.length > 1) {
-//
-//                 // for each page saved for that user find the highest pageNo
-//
-//                 const highestNumber = await this.getHighestPageNo(allPages);
-//
-//                 console.log('highestNumber ' + highestNumber);
-//
-//                 // get all pages with that pageNo
-//                 this.pageModel.find({userId, pageNo: highestNumber}).then((pagesForHighest) => {
-//                     console.log('pagesForHighest' + pagesForHighest);
-//
-//                     // if there's only one then return this
-//                     if (pagesForHighest.length === 1) {
-//                         console.log('only 1 page for the highest page number');
-//                         const pageId1 = pagesForHighest[0]._id;
-//                         this.pageModel.find({_id: pageId1}).then((result) => {
-//                                 console.log('returning result1 ' + result);
-//                                 return result;
-//                             },
-//                         );
-//                     } else {
-//                         // look for the most recent timestamp
-//                         let highestTime = new Date('2020-02-05T14:03:40+00:00');
-//                         let mostRecentPage;
-//                         for (const pg of pagesForHighest) {
-//                             const dateOfPg = new Date(pg.timestamp);
-//
-//                             if (dateOfPg > highestTime) {
-//                                 // new highestTime
-//                                 highestTime = dateOfPg;
-//                                 mostRecentPage = pg;
-//                             }
-//                         }
-//                         const pageId2 = mostRecentPage._id;
-//
-//                         this.pageModel.find({_id: pageId2}).then((result) => {
-//                             console.log('returning 2');
-//                             return result;
-//                         });
-//                     }
-//                 });
-//             }
-//
-//             // if there's only 1 page saved then return this
-//             if (allPages.length === 1) {
-//                 console.log('only 1 page saved for this user');
-//
-//                 const pageId = allPages[0]._id;
-//
-//                 return await this.pageModel.find({_id: pageId});
-//             }
-//         }
-//     }
-
     // get highest page number from a list of pages
     async getHighestPageNo(allPages) {
         let highestNumber = 0;
@@ -115,5 +50,17 @@ export class PageService {
             }
         }
         return highestNumber;
+    }
+
+    async saveOrUpdate(newPage) {
+        const userId = newPage.userId;
+        const pageNo = newPage.pageNo;
+
+        // search using email and page number and either create new document or update existing.
+        const query = { userId, pageNo };
+        this.pageModel.findOneAndUpdate(query, newPage, {upsert: true}, (err, doc) => {
+            if (doc) { return doc; }
+        });
+
     }
 }

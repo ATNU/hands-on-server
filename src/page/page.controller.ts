@@ -65,9 +65,10 @@ export class PageController {
         }
     }
 
-    // todo version that updates if that page has already been saved
-    @Post('saveAndUpdate')
-    async saveAndUpdatePage(@Res() res, @Req() req, @Body() createPageDto: CreatePageDto) {
+    @Post('sou')
+    async saveOrUpdatePage(@Res() res, @Req() req, @Body() createPageDto: CreatePageDto) {
+        console.log('save or update route');
+
         // create full page object
         if (mongoose.Types.ObjectId.isValid(req.body.jwt.id)) {
             const mongoUserId = mongoose.Types.ObjectId(req.body.jwt.id);
@@ -79,26 +80,12 @@ export class PageController {
                 timestamp: Date.now(),
             };
 
-            // check if pageNo already exists for this user
-
-            const alreadySaved = await this.pageService.getPagesForUserForPageNo(createPageDto.pageNo, req.body.jwt.id);
-            if (alreadySaved.length === 0) {
-                // no page already saved so go ahead and save as usual
-                const page = await this.pageService.save(pageToSave);
+            // save or update
+            await this.pageService.saveOrUpdate(pageToSave).then(() => {
                 return res.status(HttpStatus.CREATED).json({
-                    message: 'Page saved',
-                    page
+                    message: 'Page saved or updated',
                 });
-            } else {
-                // get page from database and update svg, json and timestamp
-                const updatedPage = await this.pageService.update(alreadySaved[0]._id, pageToSave);
-                return res.status(HttpStatus.OK).json({
-                    message: 'Page updated',
-                    updatedPage,
-                });
-            }
-
-
+            });
         }
     }
 
@@ -117,10 +104,12 @@ export class PageController {
                 message: 'no saved pages',
             });
         }
-        
+
         // get the number of the furthest page that user has saved
         const highestPageNo = await this.pageService.getHighestPageNo(await this.pageService.getAllForUser(req.body.jwt.id));
         console.log('highestPageNo ' + highestPageNo);
+
+        // todo can take this out if decide to save or update entries
         // get all saved pages for that pageNo
         const savedPages = await this.pageService.getPagesForUserForPageNo(highestPageNo, req.body.jwt.id);
         console.log('savedPages' + savedPages);
