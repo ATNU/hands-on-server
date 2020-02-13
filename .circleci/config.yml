@@ -68,7 +68,7 @@ workflows:
           context: atnu-context
           filters:
             tags:
-              ignore: /*.*/
+              ignore: /^\d+\.\d+\.\d+$/
   tagged-build:
     jobs:
       - build-with-tag:
