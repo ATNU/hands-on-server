@@ -24,15 +24,7 @@ export class UserService {
         return this.userModel.find({email: emailSupplied});
     }
 
-    // returns 0 to indicate error
-    async getFurthestPage(email: string) {
-        await this.findByEmail(email).then((user) => {
-            if (user) {
-                return user.furthestPage;
-            }
-            return 0;
-        });
-    }
+
    async updatePassword(email, password) {
         const query = { email };
         await this.userModel.updateOne(query, {password}, (err, doc) => {

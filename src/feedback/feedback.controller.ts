@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, NotFoundException, Param, Post, Req, Res} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, NotFoundException, Param, Post, Query, Req, Res} from '@nestjs/common';
 import {FeedbackService} from './feedback.service';
 import {CreateFeedbackDto} from './createFeedback.dto';
 import * as mongoose from 'mongoose';
@@ -49,6 +49,31 @@ export class FeedbackController {
         const feeds = await this.feedbackService.getAllFeedback();
         return res.status(HttpStatus.OK).json(feeds);
     }
+
+    @Get('forUser')
+    async getFeedbackForUser(@Query() query, @Res() res) {
+        const idString = query.ID;
+
+        if (mongoose.Types.ObjectId.isValid(idString)) {
+            const feedbacks = await this.feedbackService.getForUser(idString);
+            
+            if (feedbacks ===  null) {
+                return res.status(HttpStatus.OK).json({
+                    feedbacks,
+                    message: 'No feedback left',
+                });
+            } else {
+                return res.status(HttpStatus.OK).json({
+                    feedbacks,
+                });
+            }
+        } else {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'Invalid ID string',
+            });
+        }
+    }
+
 
     @Get(':feedbackID')
     async getFeedback(@Res() res, @Param('feedbackID') feedbackID) {

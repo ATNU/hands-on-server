@@ -22,4 +22,8 @@ export class FeedbackService {
     async getFeedback(feedbackID): Promise<Feedback> {
         return await this.feedbackModel.findById(feedbackID).exec();
     }
+
+    async getForUser(userId) {
+        return await this.feedbackModel.find({userId}).exec();
+    }
 }

@@ -392,4 +392,67 @@ GET api/feedback/all
 ```
 
 
+# Get feedback for user
 
+GET api/feedback/forUser?ID={userID}
+
+### Success
+
+If user has no feedback saved:
+```$xslt
+200 OK
+
+{
+    "feedbacks": null,
+    "message": "No feedback left"
+}
+```
+
+If user has one or more feedbacks submitted (list of feedback objects):
+
+```$xslt
+{
+    "feedbacks": [
+        {
+            "_id": "5e455545029fc652b0520bf6",
+            "userId": "5e4554f2a0b6d2019c22f184",
+            "q1Check": "yes",
+            "q1Text": "comments",
+            "q2Check": "yes",
+            "q2Text": "comments",
+            "q3Check": "yes",
+            "q3Text": "comments",
+            "job": "Other",
+            "jobText": "Another job",
+            "device": "Other",
+            "deviceText": "other device",
+            "timestamp": "2020-02-13T13:55:17.083Z",
+            "__v": 0
+        },
+        {
+            "_id": "5e4555e29b791858ac012ccb",
+            "userId": "5e4554f2a0b6d2019c22f184",
+            "q1Text": "comments",
+            "q2Check": "yes",
+            "q2Text": "comments",
+            "q3Check": "yes",
+            "q3Text": "comments",
+            "job": "Other",
+            "jobText": "Another job",
+            "device": "Other",
+            "deviceText": "other device",
+            "timestamp": "2020-02-13T13:57:54.384Z",
+            "__v": 0
+        }
+    ]
+}
+```
+
+### Failure
+```$xslt
+400 BAD REQUEST
+
+{
+    "message" : "Invalid ID string"
+}
+```

@@ -34,6 +34,10 @@ export class PageController {
             return res.status(HttpStatus.CREATED).json({
                 message: 'Page saved',
             });
+        } else {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'Invalid token',
+            });
         }
     }
 
@@ -57,6 +61,10 @@ export class PageController {
                 return res.status(HttpStatus.CREATED).json({
                     message: 'Page saved or updated',
                 });
+            });
+        } else {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'Invalid token',
             });
         }
     }
