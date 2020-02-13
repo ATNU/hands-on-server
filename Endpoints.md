@@ -114,7 +114,7 @@ or
 # Resume
 Returns the page object for the furthest page the logged in user has saved. 
 
-GET api/page/furthestPage
+GET api/page/resume
 
 ### Request
 Requires a valid jwt to be sent in the header authorization
@@ -146,6 +146,38 @@ User has not saved any pages, returns empty list and message:
 
 ### Failure
 See jwt error messages above
+
+# Resume with previous pages
+Sends not only the most recently saved page but also all previous pages to store in local memory.
+
+GET api/page/resumeList
+
+### Success
+```
+200 OK
+{
+    "pageList": [
+        {
+            "_id": "5e3ac2769e98093cfca2162d",
+            "userId": "5e3984ad65a9a01a9874bbbc",
+            "pageNo": 1,
+            "svg": "svgString",
+            "json": "jsonString",
+            "timestamp": "2020-02-05T13:26:14.804Z",
+            "__v": 0
+        },
+        {
+            "_id": "5e3acbcc6cd4b510e48023d5",
+            "userId": "5e3984ad65a9a01a9874bbbc",
+            "pageNo": 2,
+            "svg": "svgString",
+            "json": "jsonString",
+            "timestamp": "2020-02-05T14:06:04.632Z",
+            "__v": 0
+        }
+    ]
+}    
+```
 
 # Get page
 api/page/:pageNo
