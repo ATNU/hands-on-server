@@ -9,7 +9,7 @@ export class FeedbackController {
 
     }
 
-    // save feedback
+
     @Post('save')
     async saveFeedback(@Res() res, @Req() req, @Body() createFeedbackDto: CreateFeedbackDto) {
 
@@ -43,11 +43,13 @@ export class FeedbackController {
             });
         }
     }
+
     @Get('all')
     async getAllFeedback(@Res() res) {
         const feeds = await this.feedbackService.getAllFeedback();
         return res.status(HttpStatus.OK).json(feeds);
     }
+
     @Get(':feedbackID')
     async getFeedback(@Res() res, @Param('feedbackID') feedbackID) {
         const feedback = await this.feedbackService.getFeedback(feedbackID);

@@ -55,8 +55,6 @@ export class AuthController {
                     } else {
                         user.password = hash;
 
-                        user.furthestPage = 1;
-
                         // save user in db
                         const savedUser = await this.userService.save(user);
                         savedUser.password = undefined;

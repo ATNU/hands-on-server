@@ -86,54 +86,7 @@ GET api/auth/
 }
 ```
 
-# Reset Password
-Not protected - for backend use only
 
-api/auth/reset
-
-### Request
-```
-{ 
-	"email": string, 
-	"password" : string
-}
-```
-
-### Success
-```
-200 OK
-
-{
-    "message": "Password updated"
-}
-```
-
-### Failure
-
-```$xslt
-400 BAD REQUEST
-
-{
-    "message": "Email not in use"
-}
-```
-or
-```$xslt
-400 BAD REQUEST
-
-{
-    "message": "Please provide email and new password"
-}
-```
-
-or
-```$xslt
-500 INTERNAL SERVER ERROR
-
-{
-    "message": "Problem hashing password"
-}
-```
 
 # Protected roots
 Require a valid jwt to be included in the header authorization. If this jwt is invalid or expired, these endpoints will return 400 
@@ -195,7 +148,7 @@ User has not saved any pages, returns empty list and message:
 See jwt error messages above
 
 # Resume with previous pages
-Sends not only the most recently saved page but also all previous pages to store in local memory.
+Sends not only the most recently saved page but also all previous pages to store in local memory. Returns null for a page the user has not saved (see example).
 
 GET api/page/resumeList
 
@@ -213,10 +166,11 @@ GET api/page/resumeList
             "timestamp": "2020-02-05T13:26:14.804Z",
             "__v": 0
         },
+        null,
         {
             "_id": "5e3acbcc6cd4b510e48023d5",
             "userId": "5e3984ad65a9a01a9874bbbc",
-            "pageNo": 2,
+            "pageNo": 3,
             "svg": "svgString",
             "json": "jsonString",
             "timestamp": "2020-02-05T14:06:04.632Z",
@@ -343,3 +297,99 @@ see jwt failures
     "message": "Missing required fields"
 }
 ```
+
+# Admin endpoints
+Currently not protected by jwt or by other means.
+
+# Reset Password
+api/auth/reset
+
+### Request
+```
+{ 
+	"email": string, 
+	"password" : string
+}
+```
+
+### Success
+```
+200 OK
+
+{
+    "message": "Password updated"
+}
+```
+
+### Failure
+
+```$xslt
+400 BAD REQUEST
+
+{
+    "message": "Email not in use"
+}
+```
+or
+```$xslt
+400 BAD REQUEST
+
+{
+    "message": "Please provide email and new password"
+}
+```
+
+or
+```$xslt
+500 INTERNAL SERVER ERROR
+
+{
+    "message": "Problem hashing password"
+}
+```
+
+# Get all feedbacks
+GET api/feedback/all
+
+### Success
+
+``` 
+200 OK
+
+[
+    {
+        "_id": "5e455545029fc652b0520bf6",
+        "userId": "5e4554f2a0b6d2019c22f184",
+        "q1Check": "yes",
+        "q1Text": "comments",
+        "q2Check": "yes",
+        "q2Text": "comments",
+        "q3Check": "yes",
+        "q3Text": "comments",
+        "job": "Other",
+        "jobText": "Another job",
+        "device": "Other",
+        "deviceText": "other device",
+        "timestamp": "2020-02-13T13:55:17.083Z",
+        "__v": 0
+    },
+    {
+        "_id": "5e4555e29b791858ac012ccb",
+        "userId": "5e4554f2a0b6d2019c22f184",
+        "q1Text": "comments",
+        "q2Check": "yes",
+        "q2Text": "comments",
+        "q3Check": "yes",
+        "q3Text": "comments",
+        "job": "Other",
+        "jobText": "Another job",
+        "device": "Other",
+        "deviceText": "other device",
+        "timestamp": "2020-02-13T13:57:54.384Z",
+        "__v": 0
+    }
+]
+```
+
+
+
