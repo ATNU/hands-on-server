@@ -73,6 +73,8 @@ workflows:
       - build-with-tag:
           context: atnu-context
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^\d+\.\d+\.\d+$/
 
