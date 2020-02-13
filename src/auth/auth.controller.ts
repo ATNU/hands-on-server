@@ -109,6 +109,46 @@ export class AuthController {
 
     }
 
+    @Post('reset')
+    async resetPassword(@Req() req, @Res() res) {
+        const email = req.body.email;
+        const password = req.body.password;
+
+        if (email === undefined || password === undefined) {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'Please provide email and new password',
+            });
+        } else {
+            // check email is registered
+            const retreivedUser = await this.userService.findByEmail(email);
+
+            if (Object.keys(retreivedUser).length === 0) {
+                // no email registered
+                return res.status(HttpStatus.BAD_REQUEST).json({
+                    message: 'Email not in use',
+                });
+            } else {
+                // hash new password
+                bcrypt.hash(password, 10, async (err, hashed) => {
+                    if (err) {
+                        console.log('hashing error');
+                        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                            message: 'Problem hashing password',
+                        });
+                    } else {
+
+                        // update
+                        this.userService.updatePassword(email, hashed);
+
+                        return res.status(HttpStatus.CREATED).json({
+                            message: 'Password updated',
+                        });
+                    }
+                });
+            }
+        }
+    }
+
 
     @Get('allUsers')
     async getAll() {

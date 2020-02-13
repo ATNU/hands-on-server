@@ -33,4 +33,11 @@ export class UserService {
             return 0;
         });
     }
+   async updatePassword(email, password) {
+        const query = { email };
+        await this.userModel.updateOne(query, {password}, (err, doc) => {
+            console.log(doc);
+            return doc;
+        });
+   }
 }

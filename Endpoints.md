@@ -4,7 +4,6 @@ POST /api/auth/signup
 ### Request
 ```
 { 
-	"username" : string, 
 	"email": string, 
 	"password" : string
 }
@@ -19,7 +18,6 @@ POST /api/auth/signup
     "message": "User saved",
     "savedUser": {
         "_id": "5e34111153e1891300c8cef2",
-        "username": "test9",
         "email": "email9@ncl.ac.uk",
         "furthestPage": 1,
         "__v": 0
@@ -85,6 +83,55 @@ GET api/auth/
 401 UNAUTHORIZED
 {
     "message": "Password is not correct"
+}
+```
+
+# Reset Password
+Not protected - for backend use only
+
+api/auth/reset
+
+### Request
+```
+{ 
+	"email": string, 
+	"password" : string
+}
+```
+
+### Success
+```
+200 OK
+
+{
+    "message": "Password updated"
+}
+```
+
+### Failure
+
+```$xslt
+400 BAD REQUEST
+
+{
+    "message": "Email not in use"
+}
+```
+or
+```$xslt
+400 BAD REQUEST
+
+{
+    "message": "Please provide email and new password"
+}
+```
+
+or
+```$xslt
+500 INTERNAL SERVER ERROR
+
+{
+    "message": "Problem hashing password"
 }
 ```
 
