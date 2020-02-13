@@ -8,7 +8,7 @@ export class FeedbackController {
 
     }
 
-    // saves feedback
+    // save
     @Post('save')
     async saveFeedback(@Res() res, @Body() createFeedbackDto: CreateFeedbackDto) {
         const feedback = await this.feedbackService.save(createFeedbackDto);
