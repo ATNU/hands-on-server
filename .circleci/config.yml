@@ -78,6 +78,3 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+$/
 
-
-
-
