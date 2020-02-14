@@ -13,7 +13,7 @@ Server for the Hands-On Reading project, built using [Nest](https://github.com/n
 
 ## Running the app
 The server and client must be run in conjunction with either a locally installed version of mongoDB or mongoDB running in Docker.
-
+You must have an .env file at the root of the repo with the JWT_SECRET and DB_CONNECTION_STRING environment variable set (or set this variable in another way).
 
 
 ```bash

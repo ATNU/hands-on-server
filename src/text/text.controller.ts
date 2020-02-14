@@ -15,7 +15,9 @@ export class TextController {
         // todo not sure if this path will work in deployment so change to get from db?
 
         fs.readFile('../hands-on-server/src/text/prologue+knights.txt', 'utf8', (err, data) => {
-            console.log(err);
+
+            console.log('error reading file: ' + err);
+
             return res.status(HttpStatus.OK).json(data);
         });
             }
