@@ -26,4 +26,9 @@ export class FeedbackService {
     async getForUser(userId) {
         return await this.feedbackModel.find({userId}).exec();
     }
+
+    async numberForUser(userId) {
+        const list = await this.getForUser(userId);
+        return Object.keys(list).length;
+    }
 }

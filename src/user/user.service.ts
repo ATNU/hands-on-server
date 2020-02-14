@@ -32,4 +32,8 @@ export class UserService {
             return doc;
         });
    }
+
+   async findByID(userID) {
+       return this.userModel.find({_id: userID}).exec();
+   }
 }

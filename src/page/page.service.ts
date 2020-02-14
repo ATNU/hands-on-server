@@ -52,6 +52,11 @@ export class PageService {
         return highestNumber;
     }
 
+    async furthestPageForUser(userId) {
+        const pages = await this.getAllForUser(userId);
+            return this.getMostRecentPage(pages);
+    }
+
     async saveOrUpdate(newPage) {
         const userId = newPage.userId;
         const pageNo = newPage.pageNo;
@@ -62,5 +67,10 @@ export class PageService {
             if (doc) { return doc; }
         });
 
+    }
+
+    async numberForUser(userId) {
+        const list = await this.getAllForUser(userId);
+           return Object.keys(list).length;
     }
 }
