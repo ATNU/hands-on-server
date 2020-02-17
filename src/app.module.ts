@@ -16,7 +16,7 @@ import { TextModule } from './text/text.module';
 // for production
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://localhost:27017/hands-on-db', { useNewUrlParser: true, useUnifiedTopology: true }),
+        MongooseModule.forRoot(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true }),
         FeedbackModule,
     TextModule],
     controllers: [AppController],
