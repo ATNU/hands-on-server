@@ -56,23 +56,17 @@ export class FeedbackController {
 
         if (mongoose.Types.ObjectId.isValid(idString)) {
             const feedbacks = await this.feedbackService.getForUser(idString);
-            
-            if (feedbacks ===  null) {
+
                 return res.status(HttpStatus.OK).json({
                     feedbacks,
-                    message: 'No feedback left',
                 });
             } else {
-                return res.status(HttpStatus.OK).json({
-                    feedbacks,
-                });
-            }
-        } else {
             return res.status(HttpStatus.BAD_REQUEST).json({
                 message: 'Invalid ID string',
             });
         }
     }
+
 
 
     @Get(':feedbackID')

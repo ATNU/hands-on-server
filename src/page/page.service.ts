@@ -23,7 +23,7 @@ export class PageService {
     }
 
     async getPagesForUserForPageNo(pageNo, userId) {
-        return await this.pageModel.find({userId, pageNo});
+        return await this.pageModel.findOne({userId, pageNo});
     }
 
     async getMostRecentPage(pages) {

@@ -148,11 +148,13 @@ User has not saved any pages, returns empty list and message:
 See jwt error messages above
 
 # Resume with previous pages
-Sends not only the most recently saved page but also all previous pages to store in local memory. Returns null for a page the user has not saved (see example).
+Sends not only the most recently saved page but also all previous pages to store in local memory. Returns null for a page the user has not saved (see example). Returns pages in order of page number.
 
 GET api/page/resumeList
 
 ### Success
+
+If the user has saved pages:
 ```
 200 OK
 {
@@ -180,6 +182,13 @@ GET api/page/resumeList
 }    
 ```
 
+If the user has no saved pages:
+```aidl
+{ 
+    "pageList": []
+}
+```
+
 # Get page
 api/page/:pageNo
 e.g.
@@ -193,12 +202,11 @@ Include valid jwt
 User has not saved anything for that page number yet:
 ```
 {
-    "page": [],
-    "message": "user has not saved this page yet"
+    "page": null
 }
 ```
 
-User has saved a page for that number (returns most recently saved version):
+User has saved a page for that number:
 ```
 {
     "page": {
@@ -403,8 +411,7 @@ If user has no feedback saved:
 200 OK
 
 {
-    "feedbacks": null,
-    "message": "No feedback left"
+   "feedbacks": []
 }
 ```
 
