@@ -1,5 +1,5 @@
 # Hands-On Reading Server
-Server for the Hands-On Reading project, built using [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.`
+Server for the Hands-On Reading project, built using [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Developers
 [Kate Court](www.github.com/katecourt)   
@@ -12,12 +12,13 @@ Server for the Hands-On Reading project, built using [Nest](https://github.com/n
 [Tiago Sousa Garcia](https://www.ncl.ac.uk/elll/staff/profile/tiagosousa-garcia.html#publications) 
 
 ## Environment variables
+The server runs locally with the following environment variables stored in a .env file stored at the root level. 
 DB_CONNECTION_STRING=mongodb://localhost:27017/hands-on-db
-JWT_SECRET=6B0EDC1A5FD312AE153C10BDF3E9D761020624F22E62BA5791A4A2B798576E81
+JWT_SECRET
 
 ## Running the app
 The server and client must be run in conjunction with either a locally installed version of mongoDB or mongoDB running in Docker.
-You must have an .env file at the root of the repo with the JWT_SECRET and DB_CONNECTION_STRING environment variable set (or set this variable in another way).
+You must have an .env file at the root of the repo with the JWT_SECRET and DB_CONNECTION_STRING environment variable set (or set this variable in another way, e.g. through a docker compose file).
 
 
 ```bash

@@ -245,20 +245,45 @@ Include valid jwt
 see jwt failures
 
 
-# Save or update page
+# Save or update pages
 Saves each page as a new entry in the database or updates the entry if the user has previously saved an entry for that page.
 
 POST /api/page/sou
 
 ### Request
 Include valid jwt
-
+```
+{
+	"pages": [
+		 { 
+			"pageNo": 10, 
+			"svg": "svgString",
+			"json": "jsonString"
+		},
+		 { 
+			"pageNo": 11, 
+			"svg": "svgString",
+			"json": "jsonString"
+		},
+		 { 
+			"pageNo": 12, 
+			"svg": "svgString",
+			"json": "jsonString"
+		},
+			 { 
+			"pageNo": 13, 
+			"svg": "svgString",
+			"json": "jsonString"
+		}
+    ]
+}
+```
 ### Success
 
 ```
 201 CREATED
 {
-   "message": "Page saved or updated"
+   "message": "Pages saved or updated"
 } 
 ```    
     

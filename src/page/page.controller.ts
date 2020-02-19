@@ -43,32 +43,45 @@ export class PageController {
     }
 
     @Post('sou')
-    async saveOrUpdatePage(@Res() res, @Req() req, @Body() createPageDto: CreatePageDto) {
+    async saveOrUpdatePage(@Res() res, @Req() req) {
         console.log('save or update route');
+        const toSave = req.body.pages;
 
-        // create full page object
+        // check user is included
         if (mongoose.Types.ObjectId.isValid(req.body.jwt.id)) {
             const mongoUserId = mongoose.Types.ObjectId(req.body.jwt.id);
-            const pageToSave = {
-                userId: mongoUserId,
-                pageNo: createPageDto.pageNo,
-                svg: createPageDto.svg,
-                json: createPageDto.json,
-                timestamp: Date.now(),
-            };
 
-            // save or update
-            await this.pageService.saveOrUpdate(pageToSave).then(() => {
-                return res.status(HttpStatus.CREATED).json({
-                    message: 'Page saved or updated',
+            // check pages are included
+            if (toSave.length === 0) {
+                return res.status(HttpStatus.BAD_REQUEST).json({
+                    message: 'No page list included in request',
                 });
-            });
+            } else {
+                toSave.forEach((element) => {
+                    // for each page to save create a page object
+                    const pageToSave = {
+                        userId: mongoUserId,
+                        pageNo: element.pageNo,
+                        svg: element.svg,
+                        json: element.json,
+                        timestamp: Date.now(),
+                    };
+
+                    // save page
+                    this.pageService.saveOrUpdate(pageToSave);
+                });
+                return res.status(HttpStatus.CREATED).json({
+                    message: 'Pages saved or updated',
+                });
+            }
         } else {
-            return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'Invalid token',
-            });
+                return res.status(HttpStatus.BAD_REQUEST).json({
+                    message: 'Invalid token',
+                });
+            }
         }
-    }
+
+
 
     // return page object of the furthest saved page
     @Get('resume')
@@ -194,7 +207,6 @@ console.log('find most recent');
         //         page,
         //     });
         // }
-
 
     }
 
