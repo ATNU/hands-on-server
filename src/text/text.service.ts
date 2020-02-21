@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import * as fs from "fs";
+import {InjectModel} from '@nestjs/mongoose';
+import {Model} from 'mongoose';
+import {Text} from './text.interface';
 
 @Injectable()
 export class TextService {
 
-    constructor() {
+    constructor(@InjectModel('Text') private readonly textModel: Model<Text>) {
     }
 
-    async getText() {
-
+    async getText(): Promise<Text[]> {
+       return await this.textModel.find().exec();
     }
+
 }
