@@ -224,27 +224,6 @@ User has saved a page for that number:
 see jwt failures
 
 
-# Save page
-Saves each page as a new entry in the database, even if that user has already saved a version of that page number.
-
-POST /api/page/save
-
-### Request
-Include valid jwt
-
-### Success
-
-```
-201 CREATED
-{
-   "message": "Page saved"
-} 
-```    
-    
-### Failure
-see jwt failures
-
-
 # Save or update pages
 Saves each page as a new entry in the database or updates the entry if the user has previously saved an entry for that page.
 
@@ -353,9 +332,12 @@ Currently not protected by jwt or by other means.
 # Get user summaries
 
 ### Request
-api/app/users
+GET api/app/users
 
-###
+furthestPage = the highest page number saved by the user   
+feedbacks = the number of feedback forms submitted   
+pages = the total number of pages submitted 
+
 ### Success
 ```aidl
 {
@@ -375,13 +357,12 @@ api/app/users
     ]
 }
 ```
-furthestPage = the highest page number saved by the user   
-feedbacks = the number of feedback forms submitted   
-pages = the total number of pages submitted   
+  
   
 # Get user results
 Get all pages and feedbacks saved by a user
-/api/app/user?ID={user id}    
+
+GET /api/app/user?ID={user id}    
     e.g. /api/app/user?ID=456788900923
 
 ## Success
@@ -421,7 +402,7 @@ Get all pages and feedbacks saved by a user
 
 
 # Reset Password
-api/auth/reset
+POST api/auth/reset
 
 ### Request
 ```
