@@ -19,7 +19,7 @@ JWT_SECRET
 ## Seeding the database
 The excerpt from The Canterbury Tales needs to be inserted into the database upon startup. To do this locally, open the mongo shell and run:
  ```
-load('path/to/repo/hands-on-server/src/text/data.js).
+load('path/to/repo/hands-on-server/src/text/data.js)
 ```
 The text is too long to be inserted directly using the mongo shell, instead the javascript file 'data.js' must be run. This javascript file contains instructions to connect to a mongodb instance running on localhost:27017. This can be changed within the file for other hosts and ports.
 
