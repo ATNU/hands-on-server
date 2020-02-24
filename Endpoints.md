@@ -331,9 +331,54 @@ see jwt failures
 }
 ```
 
+# Get Text
+GET api/text
+
+### Request
+Include valid jwt
+
+### Success
+```aidl
+And bathed every veyne in swich licour,\n Of which vertu engendred is the flour;\n Whan Zephirus ...
+```
+
+### Failure
+See jwt failures
+
+****
+
 # Admin endpoints
 Currently not protected by jwt or by other means.
 
+# Get user summaries
+
+### Request
+api/app/users
+
+###
+### Success
+```aidl
+{
+    "summaries": [
+        {
+            "id": "5e3984ad65a9a01a9874bbbc",
+            "furthestPage": 14,
+            "pages": 19,
+            "feedbacks": 1
+        },
+        {
+            "id": "5e3adc241dbc913ca8bb660b",
+            "furthestPage": 1,
+            "pages": 0,
+            "feedbacks": 0
+        }
+    ]
+}
+```
+furthestPage = the highest page number saved by the user   
+feedbacks = the number of feedback forms submitted   
+pages = the total number of pages submitted   
+  
 # Reset Password
 api/auth/reset
 
@@ -380,6 +425,8 @@ or
     "message": "Problem hashing password"
 }
 ```
+
+
 
 # Get all feedbacks
 GET api/feedback/all

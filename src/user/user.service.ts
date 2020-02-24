@@ -3,11 +3,24 @@ import {InjectModel} from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {User} from './user.interface';
 import {CreateUserDto} from './createUser.dto';
+import {FeedbackService} from '../feedback/feedback.service';
+import {PageService} from '../page/page.service';
 
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel('User') private readonly userModel: Model<User>) {
+    constructor(
+        @InjectModel('User') private readonly userModel: Model<User>
+    ) {
+    }
+
+    async getIDList() {
+        const users = await this.findAll();
+        const ids = [];
+        users.forEach((user) => {
+            ids.push(user._id);
+        });
+        return ids;
     }
 
     async save(createUserDto: CreateUserDto): Promise<User> {
@@ -33,7 +46,7 @@ export class UserService {
         });
    }
 
-   async findByID(userID) {
+   async findByID(userID: Promise<User[]>) {
        return this.userModel.find({_id: userID}).exec();
    }
 }
