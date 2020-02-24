@@ -49,4 +49,18 @@ export class AppController {
         });
     }
 
+    @Get('user')
+    async getUserResults(@Res() res, @Query() query) {
+        const id = query.ID;
+
+        const feedbacks = await this.feedbackService.getForUser(id);
+        const pages = await this.pageService.getAllForUser(id);
+
+        return res.status(HttpStatus.OK).json({
+            id,
+            feedbacks,
+            pages,
+        });
+    }
+
 }
