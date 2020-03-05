@@ -70,7 +70,7 @@ export class AuthController {
 
 
 
-    @Get('login')
+    @Post('login')
     async logIn(@Res() res, @Body() createUserDto: CreateUserDto) {
         const email = createUserDto.email;
         const unhashedPass = createUserDto.password;
