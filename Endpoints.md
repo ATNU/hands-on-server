@@ -49,7 +49,7 @@ or
 ```500 Internal Server Error 'Problem hashing password```
 
 # Login
-GET api/auth/
+POST api/auth/login
 
 ### Request
 ```
