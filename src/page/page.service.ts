@@ -73,4 +73,8 @@ export class PageService {
         const list = await this.getAllForUser(userId);
            return Object.keys(list).length;
     }
+
+    async getPageByPageID(pageID): Promise<Page> {
+        return await this.pageModel.findById(pageID).exec();
+    }
 }

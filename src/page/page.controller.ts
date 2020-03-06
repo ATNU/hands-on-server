@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, Param, Post, Req, Res} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, NotFoundException, Param, Post, Req, Res} from '@nestjs/common';
 import {Page} from './page.interface';
 import {PageService} from './page.service';
 import {CreateFeedbackDto} from '../feedback/createFeedback.dto';
@@ -176,8 +176,18 @@ console.log('find most recent');
     //     });
     }
 
+    @Get('/pageID/:pageID')
+    async getPageByPageID(@Res() res, @Req() req, @Param('pageID') pageID) {
+        const page = await this.pageService.getPageByPageID(pageID);
+        if (!page) {
+            throw new NotFoundException('feedback does not exist');
+        }
+        return res.status(HttpStatus.OK).json(page);
+    }
+
+
     // only use with save or update method
-    @Get('/:pageNo')
+    @Get('pageNumber/:pageNo')
     async getPage(@Res() res, @Req() req, @Param('pageNo') pageNo) {
         console.log('get page reached');
         const page = await this.pageService.getPagesForUserForPageNo(pageNo, req.body.jwt.id);

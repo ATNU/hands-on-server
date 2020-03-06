@@ -190,7 +190,7 @@ If the user has no saved pages:
 ```
 
 # Get page
-api/page/:pageNo
+api/page/pageNumber/:pageNo
 e.g.
 ```api/page/2```
 
