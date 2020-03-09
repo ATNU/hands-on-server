@@ -12,7 +12,7 @@ export class AuthService {
     }
 
     createToken(user): TokenData {
-        const expiresIn = 60 * 60; // an hour
+        const expiresIn = 3 * 60 * 60; // 3 hours
         const secret = process.env.JWT_SECRET;
         return {
             expiresIn,
