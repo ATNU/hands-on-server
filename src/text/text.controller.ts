@@ -15,8 +15,8 @@ export class TextController {
     async getText(@Res() res) {
 
        const text = await this.textService.getText();
-       console.log(text[0].contents);
-        return res.status(HttpStatus.OK).send(text[0].contents);
+      // console.log(text[0].contents);
+       return res.status(HttpStatus.OK).send(text[0]);
 
 
 
