@@ -24,7 +24,7 @@ export class AuthController {
         if ( !user.email || !user.password) {
             console.log('missing details');
             return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'Please provide email and password to sign up',
+                message: 'Please provide email and password to register',
             });
         }
 
@@ -37,7 +37,7 @@ export class AuthController {
             console.log('email already in use');
             // username is in use
             return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'Email already in use',
+                message: "Email already in use, please click 'Login here' or use another account",
             });
         } else {
                 // email isn't taken
@@ -81,17 +81,20 @@ export class AuthController {
         if (Object.keys(rUser).length === 0) {
             // no user found
             return res.status(HttpStatus.BAD_REQUEST).json({
-                message: 'Email not in use',
+                message: "No account found for this email. Please click 'Sign up here' to register",
             });
         } else {
             // check password matches
             const user = rUser[0];
-
+            console.log(unhashedPass);
+            console.log(user.password);
+            bcrypt.compare(unhashedPass, user.password);
                 bcrypt.compare(unhashedPass, user.password, (error, match) => {
-                    if (error) {
+
+                    if (!match) {
                         console.log('passwords dont match');
-                        res.status(HttpStatus.UNAUTHORIZED).json({
-                            message: 'Password is not correct',
+                        res.status(HttpStatus.BAD_REQUEST).json({
+                            message: 'Incorrect password, please try again',
                         });
                     } else {
                         console.log('passwords match');
