@@ -194,30 +194,6 @@ console.log('find most recent');
         return res.status(HttpStatus.OK).json({
             page,
         });
-
-        // // if there's no saved pages then respond
-        // if (pages.length === 0) {
-        //     return res.status(HttpStatus.OK).json({
-        //         pages,
-        //         message: 'user has not saved this page yet',
-        //     });
-        // }
-        //
-        // // if there's only 1 saved page then return it
-        // if (pages.length === 1) {
-        //     return res.status(HttpStatus.OK).json({
-        //         page = pages[0],
-        //     });
-        //
-        // } else {
-        //
-        //     // find most recently saved page - shouldn't be needed (failsafe)
-        //     const page = await this.pageService.getMostRecentPage(pages);
-        //     return res.status(HttpStatus.OK).json({
-        //         page,
-        //     });
-        // }
-
     }
 
 }
