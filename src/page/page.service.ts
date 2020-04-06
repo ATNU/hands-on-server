@@ -23,6 +23,7 @@ export class PageService {
     }
 
     async getPagesForUserForPageNo(pageNo, userId) {
+        console.log('in get pages for user page no');
         return await this.pageModel.findOne({userId, pageNo});
     }
 

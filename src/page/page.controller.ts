@@ -88,7 +88,7 @@ export class PageController {
     async getMostRecentPage(@Res() res, @Req() req) {
 
         console.log('furthest page route');
-
+        console.log(req);
 
         // if there's no pages for this user then respond
         const pagesForUser = await this.pageService.getAllForUser(req.body.jwt.id);
@@ -104,17 +104,18 @@ export class PageController {
         console.log('highestPageNo ' + highestPageNo);
 
         // todo can take this out if decide to save or update entries
-        // get all saved pages for that pageNo
+        // get all saved pages for that pageNo - FG, pages is now only a single object, most recent is already found above
         const savedPages = await this.pageService.getPagesForUserForPageNo(highestPageNo, req.body.jwt.id);
         console.log('savedPages' + savedPages);
 
         // if there's only 1 page return that
-        if (savedPages.length === 1 ) {
+        /* FG, pages is now only a single object, most recent is already found above
+        if (savedPages.length === 1 ) {*/
             console.log('return single result');
             return res.status(HttpStatus.OK).json({
-                page: savedPages[0],
+                page: savedPages,// FG changed from  page: savedPages[0],
             });
-        } else {
+    /* FG   } else {
 console.log('find most recent');
             // find most recent page saved for the pageno
             const mostRecent = await this.pageService.getMostRecentPage(savedPages);
@@ -122,7 +123,7 @@ console.log('find most recent');
             return res.status(HttpStatus.OK).json({
                 page: mostRecent,
             });
-        }
+        }*/
 
     }
 
@@ -188,8 +189,9 @@ console.log('find most recent');
 
     // only use with save or update method
     @Get('pageNumber/:pageNo')
-    async getPage(@Res() res, @Req() req, @Param('pageNo') pageNo) {
+    async getPage(@Res() res, @Req() req, @Body() @Param('pageNo') pageNo) {
         console.log('get page reached');
+        console.log(req);
         const page = await this.pageService.getPagesForUserForPageNo(pageNo, req.body.jwt.id);
         return res.status(HttpStatus.OK).json({
             page,
