@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-    // tslint:disable-next-line:ban-types
+
     use(req: Request, res: Response, next: Function) {
         const errorMessage = (errorString: string) => res.status(HttpStatus.BAD_REQUEST).json({
             message: errorMessage,

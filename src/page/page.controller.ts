@@ -189,9 +189,9 @@ console.log('find most recent');
 
     // only use with save or update method
     @Get('pageNumber/:pageNo')
-    async getPage(@Res() res, @Req() req, @Body() @Param('pageNo') pageNo) {
-        console.log('get page reached');
-        console.log(req);
+    async getPage(@Res() res, @Req() req, @Param('pageNo') pageNo) {
+        console.log(pageNo);
+        console.log('request = ' + req.body.jwt.id);
         const page = await this.pageService.getPagesForUserForPageNo(pageNo, req.body.jwt.id);
         return res.status(HttpStatus.OK).json({
             page,

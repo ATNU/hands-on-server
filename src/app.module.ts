@@ -40,6 +40,6 @@ export class AppModule implements NestModule{
     configure(consumer: MiddlewareConsumer) {
         consumer
             .apply(AuthMiddleware)
-            .forRoutes('api/page/save', 'api/page/sou', 'api/page/resume', 'api/page/resumeList', 'api/pageNumber', 'api/feedback/save');
+            .forRoutes('api/page/save', 'api/page/sou', 'api/page/resume', 'api/page/resumeList', 'api/page/pageNumber/*', 'api/feedback/save');
     }
 }
