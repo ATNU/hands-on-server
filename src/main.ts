@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
+import * as bodyParser from 'body-parser';
 
 // checks required env variables are set
 async function loadEnvVars() {
@@ -30,6 +31,8 @@ async function loadEnvVars() {
 async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
+    app.use(bodyParser.json({limit: '50mb'}));
+    app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
     app.enableCors();
     await app.listen(3000);
   } catch (err) {
