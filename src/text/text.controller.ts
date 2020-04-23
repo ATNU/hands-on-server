@@ -1,6 +1,7 @@
-import {Controller, Get, HttpStatus, Res} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, Post, Req, Res} from '@nestjs/common';
 import {TextService} from '../text/text.service';
 import * as fs from "fs";
+
 import * as mongoose from 'mongoose';
 import * as mongo from 'mongodb';
 
@@ -11,8 +12,17 @@ export class TextController {
 
     }
 
-    @Get()
-    async getText(@Res() res) {
+    // @Get()
+    // async getText(@Res() res) {
+    //
+    //     // todo not sure if this path will work in deployment so change to get from db?
+    //
+    //     fs.readFile('../hands-on-server/src/text/prologue+knights.txt', 'utf8', (err, data) => {
+    //         console.log(err);
+    //         return res.status(HttpStatus.OK).json(data);
+    //     });
+    //         }
+
 
        const text = await this.textService.getText();
       // console.log(text[0].contents);
@@ -39,4 +49,5 @@ export class TextController {
         //     return res.status(HttpStatus.OK).json(data);
         // });
             }
+
 }

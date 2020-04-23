@@ -23,6 +23,7 @@ dotenv.config();
 // 'mongodb://localhost:27017/hands-on-db'
 
 
+
 @Module({
     imports: [
         MongooseModule.forRoot(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true,  useFindAndModify: false  }),
@@ -33,7 +34,18 @@ dotenv.config();
         PageModule],
     controllers: [AppController, AuthController],
     providers: [AppService, AuthService],
+
 })
+
+// for local development
+// @Module({
+//     imports: [
+//         MongooseModule.forRoot('mongodb://localhost:27017/hands-on-db', { useNewUrlParser: true, useUnifiedTopology: true }),
+//         FeedbackModule,
+//         TextModule],
+//     controllers: [AppController],
+//     providers: [AppService],
+// })
 
 
 export class AppModule implements NestModule{
