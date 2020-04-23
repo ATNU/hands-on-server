@@ -14,7 +14,7 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         registry: atnuregistry.azurecr.io
-        name: atnuregistry.azurecr.io/poetic-transformations-server
+        name: atnuregistry.azurecr.io/hands-on-server
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
         tag_semver: true
