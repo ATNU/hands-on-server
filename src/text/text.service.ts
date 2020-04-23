@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import {CreateTextDto} from "./createText.dto";
-import {InjectModel} from "@nestjs/mongoose";
+
+import {InjectModel} from '@nestjs/mongoose';
+
 import {Model} from 'mongoose';
 import {Text} from './text.interface';
 
@@ -10,12 +11,10 @@ export class TextService {
     constructor(@InjectModel('Text') private readonly textModel: Model<Text>) {
     }
 
-    async getText(): Promise<Text> {
-        return await this.textModel.findOne().exec();
+
+    async getText(): Promise<Text[]> {
+       return await this.textModel.find().exec();
+
     }
 
-    async save(createTextDto: CreateTextDto) {
-        const savedText = new this.textModel(createTextDto);
-        return await savedText.save();
-    }
 }

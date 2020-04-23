@@ -1,6 +1,7 @@
-
+import * as mongoose from 'mongoose';
 
 export interface CreateFeedbackDto  {
+    userId: mongoose.Schema.Types.ObjectId;
     readonly q1Check: string;
     readonly q1Text: string;
     readonly q2Check: string;
@@ -11,7 +12,5 @@ export interface CreateFeedbackDto  {
     readonly jobText: string;
     readonly device: string;
     readonly deviceText: string;
-    readonly canvasSVG: string;
-    readonly canvasJSON: string;
-    readonly createdAt: string;
+    timestamp: mongoose.Schema.Types.Date;
 }
