@@ -23,6 +23,7 @@ load('path/to/repo/hands-on-server/src/text/data.js)
 ```
 This javascript file contains instructions to connect to a mongodb instance running on localhost:27017. This can be changed within the file for other hosts and ports.
 
+Alternatively, connect to the database using Compass and insert this json document: ```hands-on-server/src/text/handsontext.json```
 
 ## Running the app
 The server and client must be run in conjunction with either a locally installed version of mongoDB or mongoDB running in Docker.
